@@ -1,2 +1,2 @@
 # CursoAPIRestSpringBoot
-Repository resposibles for keep my studies about Spring boot and yours technologies.
+Repository responsible for storing my studies on Spring boot and its technologies.
