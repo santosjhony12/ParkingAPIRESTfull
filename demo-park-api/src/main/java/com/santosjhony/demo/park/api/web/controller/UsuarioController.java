@@ -2,7 +2,9 @@ package com.santosjhony.demo.park.api.web.controller;
 
 import com.santosjhony.demo.park.api.entity.Usuario;
 import com.santosjhony.demo.park.api.service.UsuarioService;
-import com.sun.net.httpserver.HttpsServer;
+import com.santosjhony.demo.park.api.web.dto.UsuarioCreateDto;
+import com.santosjhony.demo.park.api.web.dto.UsuarioResponseDto;
+import com.santosjhony.demo.park.api.web.dto.mapper.UsuarioMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +18,9 @@ import java.util.List;
 public class UsuarioController {
     private final UsuarioService usuarioService;
     @PostMapping
-    public ResponseEntity<Usuario> create(@RequestBody Usuario usuario){
-        Usuario user = usuarioService.salvar(usuario);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    public ResponseEntity<UsuarioResponseDto> create(@RequestBody UsuarioCreateDto usuarioCreateDto){
+        Usuario user = usuarioService.salvar(UsuarioMapper.toUsuario(usuarioCreateDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(UsuarioMapper.toDto(user));
     }
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> getById(@PathVariable Long id){
