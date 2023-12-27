@@ -6,6 +6,7 @@ import com.santosjhony.demo.park.api.web.dto.UsuarioCreateDto;
 import com.santosjhony.demo.park.api.web.dto.UsuarioResponseDto;
 import com.santosjhony.demo.park.api.web.dto.UsuarioSenhaDto;
 import com.santosjhony.demo.park.api.web.dto.mapper.UsuarioMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ import java.util.List;
 public class UsuarioController {
     private final UsuarioService usuarioService;
     @PostMapping
-    public ResponseEntity<UsuarioResponseDto> create(@RequestBody UsuarioCreateDto usuarioCreateDto){
+    public ResponseEntity<UsuarioResponseDto> create(@Valid @RequestBody UsuarioCreateDto usuarioCreateDto){
         Usuario user = usuarioService.salvar(UsuarioMapper.toUsuario(usuarioCreateDto));
         return ResponseEntity.status(HttpStatus.CREATED).body(UsuarioMapper.toDto(user));
     }
