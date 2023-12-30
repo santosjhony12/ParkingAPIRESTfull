@@ -1,6 +1,7 @@
 package com.santosjhony.demo.park.api.service;
 
 import com.santosjhony.demo.park.api.entity.Usuario;
+import com.santosjhony.demo.park.api.exception.UsernameUniqueViolationException;
 import com.santosjhony.demo.park.api.repository.UsuarioRepository;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,11 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     @Transactional
     public Usuario salvar(Usuario usuario) {
-        return usuarioRepository.save(usuario);
+        try {
+            return usuarioRepository.save(usuario);
+        }catch(org.springframework.dao.DataIntegrityViolationException ex){
+            throw new UsernameUniqueViolationException(String.format("Username {%s} já cadastrado.", usuario.getUsername()));
+        }
     }
     @Transactional(readOnly = true)
     public Usuario buscarPorId(Long id){
