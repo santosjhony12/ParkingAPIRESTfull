@@ -8,6 +8,7 @@ import com.santosjhony.demo.park.api.web.dto.UsuarioSenhaDto;
 import com.santosjhony.demo.park.api.web.dto.mapper.UsuarioMapper;
 import com.santosjhony.demo.park.api.web.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -76,6 +77,15 @@ public class UsuarioController {
         Usuario user = usuarioService.editarSenha(id, dto.getSenhaAtual(), dto.getNovaSenha(), dto.getConfirmaSenha());
         return ResponseEntity.noContent().build();
     }
+    @Operation(
+            summary = "Recuperar todos os usuários",
+            description = "Recuperar todos os usuários",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Usuários recuperados",
+                        content = @Content(mediaType = "application/json",
+                        array = @ArraySchema(schema = @Schema(implementation = UsuarioResponseDto.class))))
+            }
+    )
     @GetMapping
     public ResponseEntity<List<UsuarioResponseDto>> getAll(){
         List<Usuario> users = usuarioService.buscarTodos();
