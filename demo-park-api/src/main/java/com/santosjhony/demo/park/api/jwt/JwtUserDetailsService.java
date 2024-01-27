@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class JwtUserDatailsService implements UserDetailsService {
+public class JwtUserDetailsService implements UserDetailsService {
     private UsuarioService usuarioService;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Usuario usuario = usuarioService.buscarPorUsername(username);
-        return new JwtUserDatails(usuario);
+        return new JwtUserDetails(usuario);
     }
     public JwtToken getTokenAuthenticated(String username){
         Usuario.Role role = usuarioService.buscarRolePorUsername(username);

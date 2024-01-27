@@ -1,7 +1,7 @@
 package com.santosjhony.demo.park.api.web.controller;
 
 import com.santosjhony.demo.park.api.jwt.JwtToken;
-import com.santosjhony.demo.park.api.jwt.JwtUserDatailsService;
+import com.santosjhony.demo.park.api.jwt.JwtUserDetailsService;
 import com.santosjhony.demo.park.api.web.dto.UsuarioLoginDto;
 import com.santosjhony.demo.park.api.web.exception.ErrorMessage;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Slf4j
 public class AutenticacaoController {
-    private final JwtUserDatailsService detailService;
+    private final JwtUserDetailsService detailService;
     private final AuthenticationManager authenticationManager;
 
     @PostMapping("/auth")
