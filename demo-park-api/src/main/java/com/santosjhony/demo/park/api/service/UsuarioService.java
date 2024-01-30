@@ -5,6 +5,8 @@ import com.santosjhony.demo.park.api.exception.EntityNotFoundException;
 import com.santosjhony.demo.park.api.exception.PasswordInvalidException;
 import com.santosjhony.demo.park.api.exception.UsernameUniqueViolationException;
 import com.santosjhony.demo.park.api.repository.UsuarioRepository;
+import jakarta.transaction.TransactionScoped;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,9 +18,11 @@ import java.util.List;
 @Transactional
 public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
     @Transactional
     public Usuario salvar(Usuario usuario) {
         try {
+            usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
             return usuarioRepository.save(usuario);
         }catch(org.springframework.dao.DataIntegrityViolationException ex){
             throw new UsernameUniqueViolationException(String.format("Username {%s} já cadastrado.", usuario.getUsername()));
@@ -36,10 +40,10 @@ public class UsuarioService {
             throw new PasswordInvalidException("Nova senha não confere com confirmação de senha.");
         }
         Usuario user = buscarPorId(id);
-        if(!user.getPassword().equals(senhaAtual)){
+        if(!passwordEncoder.matches(senhaAtual, user.getPassword())){
             throw new PasswordInvalidException("Sua senha não confere.");
         }
-        user.setPassword(novaSenha);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return user;
     }
     @Transactional(readOnly = true)
@@ -52,8 +56,9 @@ public class UsuarioService {
                 () -> new EntityNotFoundException(String.format("Usuário com username com ID %s não encontrado.", username))
         );
     }
-
+    @Transactional(readOnly = true)
     public Usuario.Role buscarRolePorUsername(String username) {
         return usuarioRepository.findRoleByUsername(username);
     }
+
 }
