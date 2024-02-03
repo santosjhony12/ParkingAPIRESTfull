@@ -12,6 +12,8 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -47,10 +49,13 @@ public class UsuarioController {
     }
     @Operation(
             summary = "Recuperar um usuário por ID.",
-            description = "Recuperar um usuário por ID.",
+            description = "Requisição exige um bearer token. Acesso restrito a ADMIN ou CLIENTE.",
+            security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "200", description = "Recurso recuperado com sucesso",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = UsuarioResponseDto.class))),
+                    @ApiResponse(responseCode = "403", description = "Usuário sem permissão para acessar esse recurso.",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
                     @ApiResponse(responseCode = "404", description = "Recurso não encontrado.",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             }
@@ -64,11 +69,14 @@ public class UsuarioController {
     }
     @Operation(
             summary = "Atualizar senha.",
-            description = "Atualizar senha.",
+            description = "Requisição exige um bearer token. Acesso restrito a ADMIN ou CLIENTE.",
+            security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "204", description = "Senha atualizada com sucesso.",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class))),
                     @ApiResponse(responseCode = "404", description = "Recurso não encontrado.",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+                    @ApiResponse(responseCode = "403", description = "Usuário sem permissão para acessar esse recurso.",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
                     @ApiResponse(responseCode = "400", description = "Senha não confere..",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
@@ -84,11 +92,14 @@ public class UsuarioController {
     }
     @Operation(
             summary = "Recuperar todos os usuários",
-            description = "Recuperar todos os usuários",
+            description = "Requisição exige um bearer token. Acesso restrito a ADMIN.",
+            security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "200", description = "Usuários recuperados",
                         content = @Content(mediaType = "application/json",
-                        array = @ArraySchema(schema = @Schema(implementation = UsuarioResponseDto.class))))
+                        array = @ArraySchema(schema = @Schema(implementation = UsuarioResponseDto.class)))),
+                    @ApiResponse(responseCode = "403", description = "Usuário sem permissão para acessar esse recurso.",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             }
     )
     @GetMapping
