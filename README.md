@@ -1,6 +1,4 @@
-# CursoAPIRestSpringBoot - UDEMY
-> Repository responsible for storing my studies on Spring boot and its technologies.
-
+# API RestFull Pak- UDEMY
 
 ## Statefull (Com estado)
 > Mantém o estado do cliente no servidor. Por exemplo:um aplicativo de carrinho de compras online mantém um estado de sessão para cada cliente, rastreando os itens no carrinho, o histórico de compras etc.
