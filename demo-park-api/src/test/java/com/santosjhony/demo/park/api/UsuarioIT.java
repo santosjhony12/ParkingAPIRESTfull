@@ -259,6 +259,7 @@ public class UsuarioIT {
         ErrorMessage responseBody = testClient
                 .patch()
                 .uri("/api/v1/usuarios/100")
+                .headers(JwtAuthentication.getHeaderAuthorization(testClient, "ana@gmail.com", "123456"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(new UsuarioSenhaDto("" ,"", ""))
                 .exchange()
@@ -271,6 +272,7 @@ public class UsuarioIT {
         responseBody = testClient
                 .patch()
                 .uri("/api/v1/usuarios/100")
+                .headers(JwtAuthentication.getHeaderAuthorization(testClient, "ana@gmail.com", "123456"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(new UsuarioSenhaDto("12345" ,"12345", "12345"))
                 .exchange()
@@ -283,6 +285,7 @@ public class UsuarioIT {
         responseBody = testClient
                 .patch()
                 .uri("/api/v1/usuarios/100")
+                .headers(JwtAuthentication.getHeaderAuthorization(testClient, "ana@gmail.com", "123456"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(new UsuarioSenhaDto("1234567" ,"1234567", "1234567"))
                 .exchange()
@@ -298,6 +301,7 @@ public class UsuarioIT {
         ErrorMessage responseBody = testClient
                 .patch()
                 .uri("/api/v1/usuarios/100")
+                .headers(JwtAuthentication.getHeaderAuthorization(testClient, "ana@gmail.com", "123456"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(new UsuarioSenhaDto("123456", "123457", "123458"))
                 .exchange()
@@ -310,6 +314,7 @@ public class UsuarioIT {
         responseBody = testClient
                 .patch()
                 .uri("/api/v1/usuarios/100")
+                .headers(JwtAuthentication.getHeaderAuthorization(testClient, "ana@gmail.com", "123456"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(new UsuarioSenhaDto("123457", "123456", "123456"))
                 .exchange()
