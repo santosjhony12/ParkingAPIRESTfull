@@ -330,6 +330,7 @@ public class UsuarioIT {
         List<UsuarioResponseDto> responseBody = testClient
                 .get()
                 .uri("/api/v1/usuarios")
+                .headers(JwtAuthentication.getHeaderAuthorization(testClient, "ana@gmail.com", "123456"))
                 .exchange()
                 .expectStatus().isEqualTo(200)
                 .expectBodyList(UsuarioResponseDto.class)
@@ -337,5 +338,19 @@ public class UsuarioIT {
 
         org.assertj.core.api.Assertions.assertThat(responseBody).isNotNull();
         org.assertj.core.api.Assertions.assertThat(responseBody).size().isEqualTo(3);
+    }
+
+    @Test
+    public void buscarTodosUsuariosComoCliente_RetornarErrorMenssage_ComStatus403() {
+        ErrorMessage responseBody = testClient
+                .get()
+                .uri("/api/v1/usuarios")
+                .headers(JwtAuthentication.getHeaderAuthorization(testClient, "pedro@gmail.com", "123456"))
+                .exchange()
+                .expectStatus().isEqualTo(403)
+                .expectBody(ErrorMessage.class)
+                .returnResult().getResponseBody();
+
+        org.assertj.core.api.Assertions.assertThat(responseBody.getStatus()).isEqualTo(403);
     }
 }
