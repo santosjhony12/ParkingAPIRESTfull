@@ -1,5 +1,6 @@
 package com.santosjhony.demo.park.api.web.exception;
 
+import com.santosjhony.demo.park.api.exception.CpfUniqueViolationException;
 import com.santosjhony.demo.park.api.exception.EntityNotFoundException;
 import com.santosjhony.demo.park.api.exception.PasswordInvalidException;
 import com.santosjhony.demo.park.api.exception.UsernameUniqueViolationException;
@@ -40,7 +41,7 @@ public class ApiExceptionHandler {
 
     }
 
-    @ExceptionHandler(UsernameUniqueViolationException.class)
+    @ExceptionHandler({UsernameUniqueViolationException.class, CpfUniqueViolationException.class})
     public ResponseEntity<ErrorMessage> usernameUniqueViolationException(RuntimeException ex,
                                                                         HttpServletRequest request){
         log.error("Api Error - ", ex);
