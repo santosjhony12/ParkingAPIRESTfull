@@ -6,7 +6,13 @@ import com.santosjhony.demo.park.api.service.ClienteService;
 import com.santosjhony.demo.park.api.service.UsuarioService;
 import com.santosjhony.demo.park.api.web.dto.ClienteCreateDto;
 import com.santosjhony.demo.park.api.web.dto.ClienteResponseDto;
+import com.santosjhony.demo.park.api.web.dto.UsuarioResponseDto;
 import com.santosjhony.demo.park.api.web.dto.mapper.ClienteMapper;
+import com.santosjhony.demo.park.api.web.exception.ErrorMessage;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +32,21 @@ public class ClienteController {
     private final ClienteService clienteService;
     private final UsuarioService usuarioService;
 
+    @Operation(
+            summary = "Criar um novo cliente.",
+            description = "Recurso para criar um novo cliente vinculado a um cadastrado."+
+                        "Requisição exige uso de um bearer token. Acesso restrito a Role='CLIENTE'",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Recurso criado com sucesso",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ClienteResponseDto.class))),
+                    @ApiResponse(responseCode = "409", description = "Cliente e-mail já cadastrado no sistena",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+                    @ApiResponse(responseCode = "422", description = "Recurso não processado por dados de entrada invalidos.",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+                    @ApiResponse(responseCode = "403", description = "Recurso não permitido no perfil de ADMIN.",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
+            }
+    )
     @PostMapping
     @PreAuthorize("hasRole('CLIENTE')")
     public ResponseEntity<ClienteResponseDto> create(@RequestBody @Valid ClienteCreateDto dto,
