@@ -2,6 +2,7 @@ package com.santosjhony.demo.park.api.service;
 
 import com.santosjhony.demo.park.api.entity.Cliente;
 import com.santosjhony.demo.park.api.exception.CpfUniqueViolationException;
+import com.santosjhony.demo.park.api.exception.EntityNotFoundException;
 import com.santosjhony.demo.park.api.repository.ClienteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -20,5 +21,12 @@ public class ClienteService {
         }catch (DataIntegrityViolationException ex){
             throw new CpfUniqueViolationException(String.format("CPF %s não pode ser cadastrado, já existe no sistema.", cliente.getCpf()));
         }
+    }
+
+    @Transactional(readOnly = true)
+    public Cliente buscarPorId(Long id) {
+        return clienteRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(String.format("Cliente id %s não encontrado no sistema", id))
+        );
     }
 }
