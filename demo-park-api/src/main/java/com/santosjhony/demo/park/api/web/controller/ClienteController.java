@@ -39,7 +39,7 @@ public class ClienteController {
             responses = {
                     @ApiResponse(responseCode = "201", description = "Recurso criado com sucesso",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ClienteResponseDto.class))),
-                    @ApiResponse(responseCode = "409", description = "Cliente e-mail já cadastrado no sistena",
+                    @ApiResponse(responseCode = "409", description = "Cliente CPF já cadastrado no sistena",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
                     @ApiResponse(responseCode = "422", description = "Recurso não processado por dados de entrada invalidos.",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
