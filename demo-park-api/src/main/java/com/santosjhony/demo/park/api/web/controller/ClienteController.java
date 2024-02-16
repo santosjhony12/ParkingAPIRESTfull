@@ -8,6 +8,7 @@ import com.santosjhony.demo.park.api.service.UsuarioService;
 import com.santosjhony.demo.park.api.web.dto.ClienteCreateDto;
 import com.santosjhony.demo.park.api.web.dto.ClienteResponseDto;
 import com.santosjhony.demo.park.api.web.dto.PageableDto;
+import com.santosjhony.demo.park.api.web.dto.UsuarioResponseDto;
 import com.santosjhony.demo.park.api.web.dto.mapper.ClienteMapper;
 import com.santosjhony.demo.park.api.web.dto.mapper.PageableMapper;
 import com.santosjhony.demo.park.api.web.exception.ErrorMessage;
@@ -114,6 +115,18 @@ public class ClienteController {
         Page<ClienteProjection> clientes = clienteService.buscarClientes(pageable);
         return ResponseEntity.ok().body(PageableMapper.toDto(clientes));
     }
+    @Operation(
+            summary = "Recuperar dados do Cliente",
+            description = "Requisição exige um bearer token.",
+            security = @SecurityRequirement(name = "security"),
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Cliente recuperado",
+                            content = @Content(mediaType = "application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = UsuarioResponseDto.class)))),
+                    @ApiResponse(responseCode = "403", description = "Cliente sem permissão para acessar esse recurso.",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
+            }
+    )
     @GetMapping("/detalhes")
     @PreAuthorize("hasRole('CLIENTE')")
     public ResponseEntity<ClienteResponseDto> getDetails(@AuthenticationPrincipal JwtUserDetails jwtUser){
