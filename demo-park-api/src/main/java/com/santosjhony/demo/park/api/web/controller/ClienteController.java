@@ -2,12 +2,14 @@ package com.santosjhony.demo.park.api.web.controller;
 
 import com.santosjhony.demo.park.api.entity.Cliente;
 import com.santosjhony.demo.park.api.jwt.JwtUserDetails;
+import com.santosjhony.demo.park.api.repository.projection.ClienteProjection;
 import com.santosjhony.demo.park.api.service.ClienteService;
 import com.santosjhony.demo.park.api.service.UsuarioService;
 import com.santosjhony.demo.park.api.web.dto.ClienteCreateDto;
 import com.santosjhony.demo.park.api.web.dto.ClienteResponseDto;
-import com.santosjhony.demo.park.api.web.dto.UsuarioResponseDto;
+import com.santosjhony.demo.park.api.web.dto.PageableDto;
 import com.santosjhony.demo.park.api.web.dto.mapper.ClienteMapper;
+import com.santosjhony.demo.park.api.web.dto.mapper.PageableMapper;
 import com.santosjhony.demo.park.api.web.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -82,8 +84,8 @@ public class ClienteController {
     }
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Page<Cliente>> getAll(Pageable pageable){
-        Page<Cliente> clientes = clienteService.buscarClientes(pageable);
-        return ResponseEntity.ok().body(clientes);
+    public ResponseEntity<PageableDto> getAll(Pageable pageable){
+        Page<ClienteProjection> clientes = clienteService.buscarClientes(pageable);
+        return ResponseEntity.ok().body(PageableMapper.toDto(clientes));
     }
 }
